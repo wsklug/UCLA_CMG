@@ -1,0 +1,46 @@
+# Input file for analysis using EPSimulator
+# Model name
+MODEL	Mesh/NormalHeart/Normal/NormalHeart
+
+# Output Directory
+OutputDir 	OUTPUT_DIRECTORY
+
+# QuadOrder
+QuadOrder	2
+
+# Simulation time
+SimulationTime 800.
+
+# Cell Model
+CellModel Mahajan
+
+# Output Frequency
+frequency 1
+
+# Stimulus sequence needs to be given in correct order
+Stimulus Nodal	Mesh/NormalHeart/Normal/StimNodeSet.txt 0. 5.0
+Stimulus Nodal  Mesh/NormalHeart/Normal/StimNodeSet.txt 400.0 405.0
+
+# Two D Element Radius - Purkinje System
+twoDRadius 0.04
+
+# Mechanics dt
+Mechdt 999999
+
+# Mac NR Iteration 
+maxNRIter	50
+
+# Max Linear Solver iteration
+maxLinSolveIter	10000
+
+# Mechanics Linear Solver Tolerance
+LinSolveToler	1e-7
+
+# Convergence rate check
+ConvergenceRateCheck  4
+
+# Ionic dt
+Ionicdt 0.05
+
+# Material Type
+Material CompNeoHookean

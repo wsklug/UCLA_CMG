@@ -1,0 +1,130 @@
+// -*- C++ -*-
+//----------------------------------------------------------------------
+//
+//                         William S. Klug
+//                University of California Los Angeles
+//                 (C) 2004-2005 All Rights Reserved
+//
+//----------------------------------------------------------------------
+//
+// $Log$
+// Revision 1.3  2005/10/22 19:18:04  klug
+// Fixed undefined variable problem.  Don't know how this slipped past before.
+//
+// Revision 1.2  2005/05/25 02:52:38  klug
+// Typo in blitz/array.h include.
+//
+// Revision 1.1  2005/04/21 01:45:22  klug
+// Modified shape base class.  Now templated on parametric and spatial dimensions.
+//
+//----------------------------------------------------------------------
+
+namespace voom {
+  template<std::size_t PARAM_DIM>
+  bool Shape<PARAM_DIM>::checkC0Completeness() {
+    // Compute a random polynomial linear in the PARAM_DIM coordinates.
+    
+    srand(time(0));
+
+    blitz::Array<double,1> A(PARAM_DIM+1);
+    for(int i=0; i<PARAM_DIM+1; i++)
+      A(i) = 2.0*(static_cast<double>(rand())/RAND_MAX - 0.5);
+
+    CoordinateArray s;
+    for(int i=0; i<PARAM_DIM; i++) 
+      s(i) = 0.5*static_cast<double>(rand())/RAND_MAX;
+
+    double p = A(0);
+    for(int i=0; i<PARAM_DIM; i++) p += A(i+1)*s(i);
+
+    PositionContainer sn;
+    sn = nodalCoordinates();
+
+    const FunctionContainer & N = functions();
+
+    FunctionContainer pn;
+    for(int a=0; a<N.size(); a++) {
+      pn[a] = A(0);
+      for(int i=0; i<PARAM_DIM; i++) pn[a] += A(i+1)*sn[a](i);    
+    }
+
+    compute(s);
+    double pI=0.0;
+    for(int a=0; a<N.size(); a++) pI += pn[a]*N[a];
+  
+    double error = p - pI;
+    double tol = 1.0e-10;
+    if( std::abs(error) < tol*std::abs(p) ) {
+      std::cout<<"Shape C0 completeness check PASSED!"<<std::endl;
+      return true;
+    }
+
+    std::cout<<"Shape C0 completeness check FAILED!"<<std::endl
+	     << "    p = " << p << "    pI = " << pI << "    error = " << pI-p
+	     << std::endl;
+    return false;
+  }
+
+  template<std::size_t PARAM_DIM>
+  bool Shape<PARAM_DIM>::checkConsistency(CoordinateArray s) {
+    // differentiate shape functions numerically
+    compute(s);
+
+    DerivativeContainer dnds;
+    dnds.resize(_derivatives.size());
+
+    double eps=1.0e-8;
+    for(int a=0; a<_functions.size(); a++) 
+      for(int i=0; i<PARAM_DIM; i++) 
+	dnds[a](i) = 0.0;
+
+    for(int i=0; i<PARAM_DIM; i++) {
+      s(i) += eps;
+      compute(s);
+      for(int a=0; a<_functions.size(); a++) dnds[a](i) = _functions[a];
+      s(i) -= eps+eps;
+      compute(s);
+      for(int a=0; a<_functions.size(); a++) dnds[a](i) -= _functions[a];
+      
+      s(i) += eps;
+      compute(s);
+      for(int a=0; a<_functions.size(); a++) dnds[a](i) /= (eps+eps);
+    }
+  
+    double error = 0.0;
+    double norm = 0.0;
+    for(int a=0; a<_derivatives.size(); a++) {
+      for(int i=0; i<PARAM_DIM; i++) {
+	double e=dnds[a](i)-_derivatives[a](i);
+	error += e*e;
+	norm += _derivatives[a](i)*_derivatives[a](i);
+      }
+    }
+    norm = sqrt(norm);
+    error = sqrt(error);
+
+    std::cout << "Error = " << error << " Norm = " << norm << std::endl;
+
+    double tol = 1.0e-6;
+
+    if( std::abs(error) < tol*norm ) {
+      std::cout<<"Shape consistency check PASSED!"<<std::endl;
+      return true;
+    }
+
+    std::cout<<"Shape consistency check FAILED!"<<std::endl
+	     << std::setw(10) << "n"
+	     << std::setw(24) << "analytical"
+	     << std::setw(24) << "numerical" << std::endl;
+    for(int a=0; a<_derivatives.size(); a++) {
+      for(int i=0; i<PARAM_DIM; i++) {
+	std::cout << std::setw(10) << a 
+		  << std::setw(24) << _derivatives[a](i)
+		  << std::setw(24) << dnds[a](i)
+		  << std::endl;	
+      }
+    }
+    return false;
+  }
+
+} // namespace voom
