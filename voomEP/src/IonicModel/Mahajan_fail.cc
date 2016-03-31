@@ -247,7 +247,6 @@ double Mahajan_fail::comp_ina(double dt){
     bj = (1.0-a)*(0.3*exp(-2.535e-7*_State[0])/(1+exp(-0.1*(_State[0]+32)))) + \
     a*(0.1212*exp(-0.01052*_State[0])/(1+exp(-0.1378*(_State[0]+40.14))));
 
-    // Zhilin's Code:
     /*
     if(_State[0]<(-40.0))
     {
