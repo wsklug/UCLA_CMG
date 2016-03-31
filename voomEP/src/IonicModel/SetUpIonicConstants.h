@@ -1,11 +1,11 @@
 //-*-C++-*-
 
 /*! \brief
-  Set up parameters for Ionic model. We will pass these value to the 
+  Set up parameters for Ionic model. We will pass these value to the
   Ionic Model Class. Enough to Create it once and pass a pointer to
   all Ionic Class objects. Makes it memory efficient. Used by Body Class
   For consistency this resides in the Ionic Class directory
-  
+
   Purkine Model
   Tusscher Model
   Mahajan (UCLA) Model
@@ -16,7 +16,7 @@ namespace voom {
   void SetUpPurkinjeParameters(Real **constants) {
     Real *Constants;
     Constants = new Real[63];
- 
+
     Constants[0] = 310.0;
     Constants[1] = 96485.3415;
     Constants[2] = 8314.472;
@@ -84,7 +84,7 @@ namespace voom {
     *constants = Constants;
   }
 
-  //! Constants for Tusscher Model. 
+  //! Constants for Tusscher Model.
   void SetUpTusscherParameters(Real **constants) {
     Real *Constants;
     Constants = new Real[53];
@@ -142,7 +142,7 @@ namespace voom {
     Constants[50] = 0.00025;
     Constants[51] = 0.001094;
     Constants[52] = 0.00005468;
-    
+
     *constants = Constants;
   }
 
@@ -157,9 +157,9 @@ namespace voom {
     Endo   6     7     8
    */
   void SetUpMahajanParameters(Real **constants,  int pos) {
-    Real *Constants = new Real[25];
+    Real *Constants = new Real[35];
     // Define Constants. RCONSTS is Other code
-    Constants[0] = 136.0; //xnao    
+    Constants[0] = 136.0; //xnao
     Constants[1] = 140.0; //xki
     Constants[2] = 5.4;   //xko
     Constants[3] = 1.8;   //cao
@@ -168,12 +168,12 @@ namespace voom {
     Constants[6] = 0.04;  //0.094; //0.11;  //gtos
 
 
-// Constants[7] = 0.11; 
+// Constants[7] = 0.11;
 // Constants[10] = 0.32;
 
 
     switch (pos) {
-    
+
 	  //control
     case 0: { Constants[7] = 0.11;     Constants[10] = 1.9*0.32;  break; }
     case 1: { Constants[7] = 0.11;     Constants[10] = 1.4*0.32;  break; }
@@ -184,7 +184,7 @@ namespace voom {
     case 6: { Constants[7] = 0.11*.85; Constants[10] = 0.98*0.32; break; }
     case 7: { Constants[7] = 0.11*.85; Constants[10] = 0.7*0.32;  break; }
     case 8: { Constants[7] = 0.11*.85; Constants[10] = 0.5*0.32;  break; }
-	
+
       /*
     // TRANSMURAL GRADIENTS ONLY:
     case 0: { Constants[7] = 0.11;     Constants[10] = 1.4*0.32;  break; }
@@ -198,7 +198,7 @@ namespace voom {
     case 8: { Constants[7] = 0.11*.85; Constants[10] = 0.7*0.32;  break; }
       */
 
-    /* 
+    /*
     // APICOBASAL GRADIENTS ONLY:
     case 0: { Constants[7] = 0.11;     Constants[10] = 0.74*0.32; break; }
     case 1: { Constants[7] = 0.11;     Constants[10] = 0.52*0.32; break; }
@@ -210,16 +210,16 @@ namespace voom {
     case 7: { Constants[7] = 0.11;     Constants[10] = 0.52*0.32; break; }
     case 8: { Constants[7] = 0.11;     Constants[10] = 0.35*0.32; break; }
     */
-    default: 
+    default:
     {
       std::cout << "Tissue Type not set correctly. Setting to Epi-Base\n";
-      Constants[7] = 0.11;  Constants[10] = 0.32; 
+      Constants[7] = 0.11;  Constants[10] = 0.32;
     }
     }
-	
+
     Constants[8] = 0.84;  //gnaca
     Constants[9] = 0.0125; //gkr
- 	
+
     Constants[11] = 0.3;  //gk1
     Constants[12] = 1.5;  //gnak
     Constants[13] = 0.4;  //vup
@@ -235,72 +235,83 @@ namespace voom {
     Constants[23] =96.485;//xf
     Constants[24] = Constants[23]/(Constants[22]*Constants[20]); //frt
 
+    Constants[25] = 153;       // qmax
+    Constants[26] = 50;        // shallow threshold
+    Constants[27] = 1.0;       // Multiplier for J_leak
+    Constants[28] = 1.0;       // Multiplier for J_d
+    Constants[29] = 1.0;       // Multiplier for J_trpn
+    Constants[30] = 1.0;       // Multiplier for J_up
+
+    // Changes for Sodium:
+    Constants[31] = 0.0;       // Leak in m-gate
+    Constants[32] = 0.0;       // Leak in h-gate
+    Constants[33] = 0.0;       // Leak in j-gate
+    Constants[34] = 1.0;       // Multiplier for time constant on J-gate
     *constants = Constants;
   }
 
 
-void SetUpMahajan_failParameters(Real **constants,  int pos) {
-    Real *Constants = new Real[25];
-   //  Define Constants. RCONSTS is Other code
-    Constants[0] = 136.0;//xnao
-    Constants[1] = 140.0;//xki
-    Constants[2] = 5.4;//xko
-    Constants[3] = 1.8;//cao
-    Constants[4] = 182.0;// 1000.; /182.0; /gca
-    Constants[5] = 1.0;   //ica_factor
-    Constants[6] = 0.04*0.65; //0.094; /0.11;  /gtos
+  void SetUpMahajan_failParameters(Real **constants,  int pos) {
+      Real *Constants = new Real[35];
+     //  Define Constants. RCONSTS is Other code
+      Constants[0] = 136.0;//xnao
+      Constants[1] = 140.0;//xki
+      Constants[2] = 5.4;//xko
+      Constants[3] = 1.8;//cao
+      Constants[4] = 182.0;// 1000.; /182.0; /gca
+      Constants[5] = 1.0;   //ica_factor
+      Constants[6] = 0.04*0.65; //0.094; /0.11;  /gtos
 
- switch (pos) {
-    case 0: { Constants[7] = 0.11;     Constants[10] = 1.9*0.32;  break; }
-    case 1: { Constants[7] = 0.11;     Constants[10] = 1.4*0.32;  break; }
-    case 2: { Constants[7] = 0.11;     Constants[10] = 1.0*0.32;  break; }
-    case 3: { Constants[7] = 0.11;     Constants[10] = 0.74*0.32; break; }
-    case 4: { Constants[7] = 0.11;     Constants[10] = 0.52*0.32; break; }
-    case 5: { Constants[7] = 0.11;     Constants[10] = 0.35*0.32; break; }
-    case 6: { Constants[7] = 0.11*.85; Constants[10] = 0.98*0.32; break; }
-    case 7: { Constants[7] = 0.11*.85; Constants[10] = 0.7*0.32;  break; }
-    case 8: { Constants[7] = 0.11*.85; Constants[10] = 0.5*0.32;  break; }
- 
- /*
-   // APICOBASAL GRADIENTS ONLY:
- case 0: { Constants[7] = 0.11;     Constants[10] = 1.2*0.32; break; }
- case 1: { Constants[7] = 0.11;     Constants[10] = 1.0*0.32; break; }
- case 2: { Constants[7] = 0.11;     Constants[10] = 0.8*0.32; break; }
- case 3: { Constants[7] = 0.11;     Constants[10] = 1.2*0.32; break; }
- case 4: { Constants[7] = 0.11;     Constants[10] = 1.0*0.32; break; }
- case 5: { Constants[7] = 0.11;     Constants[10] = 0.8*0.32; break; }
- case 6: { Constants[7] = 0.11;     Constants[10] = 1.2*0.32; break; }
- case 7: { Constants[7] = 0.11;     Constants[10] = 1.0*0.32; break; }
- case 8: { Constants[7] = 0.11;     Constants[10] = 0.8*0.32; break; }
- */
- default:
-   {
-     std::cout << "Tissue Type not set correctly. Setting to Epi-Base\n";
-     
-     Constants[7] = 0.11;  Constants[10] = 0.32;
-   }
- }
 
-    Constants[7] *=0.67; 
-    Constants[8] = 0.84*2.0; //gnaca
-    Constants[9] = 0.0125;   //gkr
-    Constants[10] *= 0.6;
-    Constants[11] = 0.3*0.5;//gk1
-    Constants[12] = 1.5;    //gnak
-    Constants[13] = 0.24;    //vup
-    Constants[14] = 4.0;    //taus
-    Constants[15] = 12.0;   //gna
-    Constants[16] = 30.0;   //taur
-    Constants[17] = 100.0;  //taua
-    Constants[18] = 56.5;   //av
-    Constants[19] = 60.0;   //cstar
-    Constants[20] = 308.;   //T
-    Constants[21] = -80.;   //Vc
-    Constants[22] = 8.314;  //xxr
-    Constants[23] = 96.485; //xf
-    Constants[24] = Constants[23]/(Constants[22]*Constants[20]); //frt
+     switch (pos) {
+     case 0: { Constants[7] = 0.12;      Constants[10] = 1.5 * 0.1386; break; }
+     case 1: { Constants[7] = 0.12;      Constants[10] = 1.3 * 0.1386; break; }
+     case 2: { Constants[7] = 0.12;      Constants[10] = 1.1 * 0.1386; break; }
+     case 3: { Constants[7] = 0.12;      Constants[10] = 1.0 * 0.1386; break; }
+     case 4: { Constants[7] = 0.12;      Constants[10] = 0.9 * 0.1386; break; }
+     case 5: { Constants[7] = 0.12;      Constants[10] = 0.8 * 0.1386; break; }
+     case 6: { Constants[7] = 0.12*0.77; Constants[10] = 1.1 * 0.1386; break; }
+     case 7: { Constants[7] = 0.12*0.77; Constants[10] = 1.0 * 0.1386; break; }
+     case 8: { Constants[7] = 0.12*0.77; Constants[10] = 0.9 * 0.1386; break; }
 
-    *constants = Constants;
-  }
+     default:{ Constants[7] = 0.12; Constants[10] = 0.1386; }
+     }
+
+
+     // Constants[7] = 0.11; Constants[10] = 0.32;
+
+     Constants[7] *=0.67;
+     Constants[8] = 0.84*2.0;  //*2.0 gnaca
+     Constants[9] = 0.0125;    //gkr
+     Constants[10] *= 0.6;
+     Constants[11] = 0.3*0.5;  //gk1
+     Constants[12] = 1.5;      //gnak
+     Constants[13] = 0.27;      //vup    0.24
+     Constants[14] = 6.0;      // 4.0 taus
+     Constants[15] = 12.0;     //gna
+     Constants[16] = 30.0;     // 30 taur
+     Constants[17] = 200.0;    //100 taua
+     Constants[18] = 22.5;     //av  11.3 -   56.5
+     Constants[19] = 50.0;     //cstar  60
+     Constants[20] = 308.;     //T
+     Constants[21] = -80.;     //Vc
+     Constants[22] = 8.314;    //xxr
+     Constants[23] = 96.485;   //xf
+     Constants[24] = Constants[23]/(Constants[22]*Constants[20]); //frt
+
+      Constants[25] = 153;       // qmax
+      Constants[26] = 10;        // shallow threshold
+      Constants[27] = 1.0;       // Multiplier for J_leak
+      Constants[28] = 1.0;       // Multiplier for J_d
+      Constants[29] = 1.0;       // Multiplier for J_trpn
+      Constants[30] = 1.0;       // Multiplier for J_up
+
+      // Changes for Sodium:
+      Constants[31] = 0.01;      // Leak in m-gate
+      Constants[32] = 0.01;      // Leak in h-gate
+      Constants[33] = 0.01;      // Leak in j-gate
+      Constants[34] = 1.0;       // Multiplier for time constant of J-gate
+      *constants = Constants;
+    }
 
 }

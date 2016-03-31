@@ -1,24 +1,21 @@
-# Input file for analysis using EPSimulator
+# Input file for analysis using Drishti
 # Model name
 MODEL Mesh/NormalHeart/NormalHeart
 
 # Output Directory
-OutputDir	OUTPUT_DIRECTORY
+OutputDir OUTPUT_DIRECTORY
 
 # QuadOrder
 QuadOrder 2
 
 # Simulation time
-SimulationTime 5000.
-
-# Write restart
-# WriteRestart 500.
-
-# Read restart
-# ReadRestart	500.
+SimulationTime 3000.0
 
 # Cell Model
-CellModel Mahajan
+CellModel Mahajan_fail
+
+# Initial States
+InitialStates Mesh/NormalHeart/States200ms_CorrMah_normal.dat
 
 # Output Frequency
 frequency 1
@@ -26,7 +23,11 @@ frequency 1
 # Stimulus 1
 # Stimulus sequence needs to be given in correct order
 Stimulus Nodal  Mesh/NormalHeart/StimNodeSet.txt 0.0 5.0
-Stimulus Nodal  Mesh/NormalHeart/WedgeNodeSet.txt 219.0 224.0
+Stimulus Nodal  Mesh/NormalHeart/StimNodeSet.txt 200.0 205.0
+Stimulus Nodal  Mesh/NormalHeart/StimNodeSet.txt 400.0 405.0
+Stimulus Nodal  Mesh/NormalHeart/StimNodeSet.txt 600.0 605.0
+Stimulus Nodal  Mesh/NormalHeart/StimNodeSet.txt 780.0 785.0
+Stimulus Nodal  Mesh/NormalHeart/StimNodeSet.txt 960.0 965.0
 
 # Two D Element Radius - Purkinje System
 twoDRadius 0.04

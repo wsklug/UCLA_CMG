@@ -94,8 +94,8 @@ int main(int argc, char** argv) {
   std::vector< Real > myocardiumStates;
   Real matData[] = {1.053e-3, 6.0e4, 59.0e0, 8.023, 18.472e0, 16.026, 2.481e0, 
 		    11.120,0.216e0, 11.436e0};
-  Real D[] = { 0.001, 0.0005, 0.00025 };     // Normal Heart
-  // Real D[] = {0.0005, 0.00025, 0.00025};	// Failing_Heart: 2:1:1 (Modeling Connexin43)  
+  // Real D[] = { 0.001, 0.0005, 0.00025 };     // Normal Heart
+  Real D[] = {0.0005, 0.00025, 0.00025};	// Failing_Heart: 2:1:1 (Modeling Connexin43)  
   // Real D[] = {0.00025, 0.00025, 0.00025};	// 1:1:1	  
   // Real D[] = { 0.00075, 0.000375, 0.0001875 };  // VF with slower conduction velocity (~75% of D)
   // Real D[] = { 0.0005, 0.0005, 0.0005 };  // Isotropic with cross-fiber velocity

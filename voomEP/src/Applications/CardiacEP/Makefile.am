@@ -1,4 +1,4 @@
-bin_PROGRAMS    = EPSimulator ComputeECG
+bin_PROGRAMS    = EPSimulator EPSimulator_Failing ComputeECG
 voomdir = ../../
 INCLUDES        =-I$(voomdir)/       			 \
 		-I$(voomdir)/Body/			 \
@@ -14,6 +14,7 @@ INCLUDES        =-I$(voomdir)/       			 \
 		-I/u/local/apps/trilinos/current/include
 ComputeECG_SOURCES      = ComputeECG.cc
 EPSimulator_SOURCES         = EPSimulator.cc
+EPSimulator_Failing_SOURCES = EPSimulator_Failing.cc
 AM_LDFLAGS    = -L$(blitz_libraries) -L$(xerces_libraries)		\
         -L$(voomdir)/ -L$(voomdir)/Quadrature/      			\
         -L$(voomdir)/Shape/						\
