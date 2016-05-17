@@ -1,7 +1,7 @@
 #include "CardiacBody.h"
 // Set up parameters for Ionic Models
 #include "SetUpIonicConstants.h"
-#include "Stewart.h"
+// #include "Stewart.h"
 
 namespace voom {
   // Constructor

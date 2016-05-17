@@ -1,0 +1,53 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT([voom], [1.0], [klug@ucla.edu])
+AM_INIT_AUTOMAKE([foreign nostdinc])
+
+AC_CONFIG_SRCDIR(src/voom.h)
+AM_CONFIG_HEADER(src/config.h)
+
+dnl Checks for programs.
+AC_PROG_RANLIB
+
+# C compiler
+AC_PROG_CC
+
+# C++ compiler
+AC_PROG_CXX([g++ xlc++ xlC icpc icc pathCC cxx aCC c++ CC pgCC KCC FCC])
+AC_LANG(C++)
+#AC_CXX_FLAGS_PRESET
+
+
+# F77 compiler
+AC_PROG_F77
+
+dnl AC_LANG_CPLUSPLUS
+
+dnl Checks for libraries:  Blitz++, tvmet
+VOOM_CHECK_BLITZ
+VOOM_CHECK_TVMET
+
+dnl Checks for header files.
+dnl AC_HEADER_STDC
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+dnl AC_C_CONST
+dnl AC_C_INLINE
+
+dnl Checks for library functions.
+
+AC_SUBST(blitz_includes)
+AC_SUBST(blitz_libraries)
+
+AC_SUBST(tvmet_includes)
+
+AC_CONFIG_FILES([Makefile
+	src/Makefile
+	src/Shape/Makefile
+	src/Quadrature/Makefile
+	src/VoomMath/Makefile
+	src/Mesh/Makefile
+	src/Solvers/Makefile
+	src/IonicModel/Makefile
+	src/Material/Makefile
+	src/Body/Makefile])
+AC_OUTPUT

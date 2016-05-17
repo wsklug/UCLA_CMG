@@ -3,8 +3,8 @@
 #include "TetMesh.h"
 #include "QuadMesh.h"
 #include "Tri3Mesh.h"
-#include "MeshFree2D.h"
-#include "MeshFree3D.h"
+// #include "MeshFree2D.h"
+// #include "MeshFree3D.h"
 #include "MixedMesh3D.h"
 
 
@@ -445,6 +445,7 @@ namespace voom {
 			      dindexMap, quadOrder, nNodes, PurkinjeNodes,
 			      TissueType, essentialBC, naturalBC);
 	break;
+      /*
       case 4:
 	myMesh = new MeshFree2D(nodes, ghNodes, diffusion, elementConnectivity,
 				nLocalNodes, nGhostNodes, localNodeID, 
@@ -463,6 +464,7 @@ namespace voom {
 				PurkinjeNodes, TissueType, essentialBC, 
 				naturalBC);
 	break;
+      */
       case 6:
 	myMesh = new MixedMesh3D(nodes, ghNodes, diffusion,elementConnectivity,
 				 nLocalNodes, nGhostNodes, localNodeID, 
